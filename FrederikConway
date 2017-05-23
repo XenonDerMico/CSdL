@@ -1,0 +1,119 @@
+Zufallsmatrix <- function(x,y,p, type = "double"){
+  # Zufallsmatrix erzeugt eine x*y große Matrix deren Einträge mit einer
+  # Warscheinlichkeit p 1 und sonst 0 sind
+  if(type == "double"){
+    M <- matrix(as.double(runif(x*y)<=p),x,y) 
+  }else{
+    M <- matrix(as.integer(runif(x*y)<=p),x,y) 
+  }
+  
+  return(M)
+}
+
+alsRegelliste <- function(regelstring){
+  # Übersetzt einen Regelstring in eine Liste mit den Regeln
+  #
+  # Hängt Zahlen in die erste Liste ein bis ein '/' kommt
+  # Hängt darauf alle weitern in die zweite Liste 
+  regelliste = list(BESTEHEN = NULL,ENTSTEHEN = NULL)
+  WO <- 1
+  for(i in strsplit(regelstring,"")[[1]]){
+    if(i != '/'){
+      regelliste[[WO]] <- unlist(append(regelliste[WO],as.integer(i)))
+    }else{
+      WO = 2
+    }
+  }
+  return(regelliste)
+}
+
+
+Nachbarn <- function(M){
+  # Gibt eine Matrix der Größe von M+2 zurück welche die Anzahl an Nachbar enthält
+  m <- array(0, dim(M)+2)
+  
+  m[1:nrow(M),1:ncol(M)] <-m[1:nrow(M),1:ncol(M)]+M
+  m[1:nrow(M),1:ncol(M)+1] <-m[1:nrow(M),1:ncol(M)+1]+M
+  m[1:nrow(M),1:ncol(M)+2] <-m[1:nrow(M),1:ncol(M)+2]+M
+
+  m[1:nrow(M)+1,1:ncol(M)] <-m[1:nrow(M)+1,1:ncol(M)]+M
+
+  m[1:nrow(M)+1,1:ncol(M)+2] <-m[1:nrow(M)+1,1:ncol(M)+2]+M
+
+  m[1:nrow(M)+2,1:ncol(M)] <-m[1:nrow(M)+2,1:ncol(M)]+M
+  m[1:nrow(M)+2,1:ncol(M)+1] <-m[1:nrow(M)+2,1:ncol(M)+1]+M
+  m[1:nrow(M)+2,1:ncol(M)+2] <-m[1:nrow(M)+2,1:ncol(M)+2]+M
+  
+  return(m)
+}
+
+Verkleinern <- function(M){
+  # Entfernt Ränder ohne lebende Zellen
+  while(!any(M[1,])){
+    M<-M[-1,]
+  }
+  while(!any(M[,1])){
+    M<-M[,-1]
+  }
+  while(!any(M[nrow(M),])){
+    M<-M[-nrow(M),]
+  }
+  while(!any(M[,ncol(M)])){
+    M<-M[,-ncol(M)]
+  }
+  return(M)
+}
+
+Update <- function(M,R = "23/3"){
+  # Update bekommt eine Matrix und einen Regelsatz
+  # Update liefert eine Upgedatete Matrix
+  #
+  # M =  Matrix
+  #
+  # R = Regeln "überlebt/geboren"
+
+  if(is.character(R)){
+    REGELN = alsRegelliste(R)
+  }else{
+    REGELN = R
+  }
+  
+  AnzahlNachbarn = Nachbarn(M)
+
+  m <- array(0,dim(M)+2)
+  m[-c(1,nrow(m)),-c(1,ncol(m))]<- M
+
+
+  Ergebniss <- array(0,dim(M)+2)
+  Ergebniss <- apply(((AnzahlNachbarn %in% REGELN$BESTEHEN )& m | AnzahlNachbarn %in% REGELN$ENTSTEHEN),c(1,2),as.integer)
+  Ergebniss <- Verkleinern(Ergebniss)
+  return(Ergebniss)
+  
+}
+
+
+
+########################
+#                      #
+#   Kleines Beispiel   #
+#                      #
+########################
+
+
+x = Zufallsmatrix(100,100,0.25)
+x = Update(x)
+plotConway <- function(M){
+  image(M,col = gray.colors(2,0,1),
+        asp=1,
+        x = seq(0,nrow(M)-1,length.out = nrow(M))/nrow(M)-.5,
+        y=seq(0,ncol(M)-1,length.out = ncol(M))/ncol(M)-.5)
+}
+
+plotConway(x)
+x = Update(x)
+# x = array(c(1,0),c(50,50))
+for(i in 1:100){
+  plotConway(x)
+  x = Update(x)#,R = "1357/1357")
+  Sys.sleep(0.1)
+}
