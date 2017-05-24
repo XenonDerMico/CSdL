@@ -84,13 +84,21 @@ Update <- function(M,R = "23/3"){
   m[-c(1,nrow(m)),-c(1,ncol(m))]<- M
 
 
-  Ergebniss <- array(0,dim(M)+2)
-  Ergebniss <- apply(((AnzahlNachbarn %in% REGELN$BESTEHEN )& m | AnzahlNachbarn %in% REGELN$ENTSTEHEN),c(1,2),as.integer)
-  Ergebniss <- Verkleinern(Ergebniss)
-  return(Ergebniss)
+  Ergebnis <- array(0,dim(M)+2)
+  Ergebnis <- apply(((AnzahlNachbarn %in% REGELN$BESTEHEN )& m | AnzahlNachbarn %in% REGELN$ENTSTEHEN),c(1,2),as.integer)
+  Ergebnis <- Verkleinern(Ergebnis)
+  return(Ergebnis)
   
 }
 
+plotConway <- function(M){
+  par(bg = 'black')
+  image(M,col = gray.colors(2,0,1),
+        asp=1,
+        x = seq(0,nrow(M)-1,length.out = nrow(M)),
+        y=seq(0,ncol(M)-1,length.out = ncol(M)),
+        xaxt='n',yaxt = 'n' , ann = FALSE,bty="n")
+}
 
 
 ########################
@@ -99,21 +107,29 @@ Update <- function(M,R = "23/3"){
 #                      #
 ########################
 
-
-x = Zufallsmatrix(100,100,0.25)
-x = Update(x)
-plotConway <- function(M){
-  image(M,col = gray.colors(2,0,1),
-        asp=1,
-        x = seq(0,nrow(M)-1,length.out = nrow(M))/nrow(M)-.5,
-        y=seq(0,ncol(M)-1,length.out = ncol(M))/ncol(M)-.5)
+gleiter = function(){
+  return(matrix(c(1,1,1,1,0,0,0,1,0),3,3,byrow = F))
 }
 
-plotConway(x)
-x = Update(x)
-# x = array(c(1,0),c(50,50))
-for(i in 1:100){
+gleiter4 = function(){
+  x = gleiter()
+  x = cbind(x,0)
+  x = rbind(x,0)
+  x = cbind(x,x[,c(4,3,2,1)])
+  x = rbind(x,x[c(4,3,2,1),])
+  return(x)
+}
+x = Zufallsmatrix(50,100,0.1)
+#y = (x + Update(x))/2
+#x = Update(x)
+
+#plotConway(x)
+#x = Update(x)
+#x = array(c(1,0),c(51,51))
+for(i in 1:1000){
   plotConway(x)
-  x = Update(x)#,R = "1357/1357")
-  Sys.sleep(0.1)
+  x = Update(x)#,R = "12345/3	")
+  Sys.sleep(0.2)
 }
+
+plotConway(array(runif(100,min = 0,max = 2),c(10,10)))
