@@ -100,12 +100,12 @@ plotConway <- function(M){
         xaxt='n',yaxt = 'n' , ann = FALSE,bty="n")
 }
 
+########################
+#                      #
+#    StartBeispiele    #
+#                      #
+########################
 
-########################
-#                      #
-#   Kleines Beispiel   #
-#                      #
-########################
 
 gleiter = function(){
   return(matrix(c(1,1,1,1,0,0,0,1,0),3,3,byrow = F))
@@ -119,6 +119,20 @@ gleiter4 = function(){
   x = rbind(x,x[c(4,3,2,1),])
   return(x)
 }
+
+explusion = function(){
+  x =  matrix(c(1,1,1,0,1,1,1,1,0,0,0,0,0,1,1,1,1,0,1,1,1),3,7,byrow = TRUE)
+  return(x)
+}
+
+rPentomino = function(){
+  return(matrix(c(0,1,0,1,1,1,1,0,0),3,3))
+}
+########################
+#                      #
+#   Kleines Beispiel   #
+#                      #
+########################
 x = Zufallsmatrix(50,100,0.1)
 #y = (x + Update(x))/2
 #x = Update(x)
