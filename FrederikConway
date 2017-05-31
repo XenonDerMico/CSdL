@@ -19,7 +19,7 @@ alsRegelliste <- function(regelstring){
   WO <- 1
   for(i in strsplit(regelstring,"")[[1]]){
     if(i != '/'){
-      regelliste[[WO]] <- unlist(append(regelliste[WO],as.integer(i)))
+      regelliste[[WO]] <- unlist(append(regelliste[[WO]],as.integer(i)))
     }else{
       WO = 2
     }
