@@ -1,20 +1,26 @@
 Zufallsmatrix <- function(x,y,p, type = "double"){
+  
   # Zufallsmatrix erzeugt eine x*y große Matrix deren Einträge mit einer
-  # Warscheinlichkeit p 1 und sonst 0 sind
+  # Warscheinlichkeit p 1./1/T und sonst 0./0/F sind
+  
   if(type == "double"){
     M <- matrix(as.double(runif(x*y)<=p),x,y) 
-  }else{
+  }
+  if(type == "int"){
     M <- matrix(as.integer(runif(x*y)<=p),x,y) 
+  }else{
+    M <- matrix((runif(x*y)<=p),x,y) 
   }
   
   return(M)
 }
 
 alsRegelliste <- function(regelstring){
+  
   # Übersetzt einen Regelstring in eine Liste mit den Regeln
-  #
   # Hängt Zahlen in die erste Liste ein bis ein '/' kommt
   # Hängt darauf alle weitern in die zweite Liste 
+  
   regelliste = list(BESTEHEN = NULL,ENTSTEHEN = NULL)
   WO <- 1
   for(i in strsplit(regelstring,"")[[1]]){
@@ -29,17 +35,19 @@ alsRegelliste <- function(regelstring){
 
 
 Nachbarn <- function(M){
+  
   # Gibt eine Matrix der Größe von M+2 zurück welche die Anzahl an Nachbar enthält
+  
   m <- array(0, dim(M)+2)
   
   m[1:nrow(M),1:ncol(M)] <-m[1:nrow(M),1:ncol(M)]+M
   m[1:nrow(M),1:ncol(M)+1] <-m[1:nrow(M),1:ncol(M)+1]+M
   m[1:nrow(M),1:ncol(M)+2] <-m[1:nrow(M),1:ncol(M)+2]+M
-
+  
   m[1:nrow(M)+1,1:ncol(M)] <-m[1:nrow(M)+1,1:ncol(M)]+M
-
+  
   m[1:nrow(M)+1,1:ncol(M)+2] <-m[1:nrow(M)+1,1:ncol(M)+2]+M
-
+  
   m[1:nrow(M)+2,1:ncol(M)] <-m[1:nrow(M)+2,1:ncol(M)]+M
   m[1:nrow(M)+2,1:ncol(M)+1] <-m[1:nrow(M)+2,1:ncol(M)+1]+M
   m[1:nrow(M)+2,1:ncol(M)+2] <-m[1:nrow(M)+2,1:ncol(M)+2]+M
@@ -48,30 +56,34 @@ Nachbarn <- function(M){
 }
 
 Verkleinern <- function(M){
-  # Entfernt Ränder ohne lebende Zellen
-  while(!any(M[1,])){
+  
+  # Entfernt Ränder ohne lebende Zellen bis zu einer Mindestgröße von 2 X 2 
+  # damit die Matrix erhalten bleibt
+  
+  while(nrow(M) > 2 & !any(M[1,])){
     M<-M[-1,]
   }
-  while(!any(M[,1])){
+  while(ncol(M) > 2 & !any(M[,1]) ){
     M<-M[,-1]
   }
-  while(!any(M[nrow(M),])){
+  while(nrow(M) > 2 & !any(M[nrow(M),])){
     M<-M[-nrow(M),]
   }
-  while(!any(M[,ncol(M)])){
+  while(ncol(M) > 2 & !any(M[,ncol(M)])){
     M<-M[,-ncol(M)]
   }
   return(M)
 }
 
 Update <- function(M,R = "23/3"){
+
   # Update bekommt eine Matrix und einen Regelsatz
   # Update liefert eine Upgedatete Matrix
   #
   # M =  Matrix
   #
-  # R = Regeln "überlebt/geboren"
-
+  # R = Regeln "Bestehen/Entstehen"
+  
   if(is.character(R)){
     REGELN = alsRegelliste(R)
   }else{
@@ -79,11 +91,11 @@ Update <- function(M,R = "23/3"){
   }
   
   AnzahlNachbarn = Nachbarn(M)
-
-  m <- array(0,dim(M)+2)
-  m[-c(1,nrow(m)),-c(1,ncol(m))]<- M
-
-
+  
+  m <- array(0,dim(M)+2)              # Alte Matrix mit der Dimension der Nachtbarmatrix
+  m[-c(1,nrow(m)),-c(1,ncol(m))]<- M  
+  
+  
   Ergebnis <- array(0,dim(M)+2)
   Ergebnis <- apply(((AnzahlNachbarn %in% REGELN$BESTEHEN )& m | AnzahlNachbarn %in% REGELN$ENTSTEHEN),c(1,2),as.integer)
   Ergebnis <- Verkleinern(Ergebnis)
@@ -98,6 +110,9 @@ plotConway <- function(M){
         x = seq(0,nrow(M)-1,length.out = nrow(M)),
         y=seq(0,ncol(M)-1,length.out = ncol(M)),
         xaxt='n',yaxt = 'n' , ann = FALSE,bty="n")
+  mtext(side = 1, text = nrow(M), line = 1, col = "white")
+  mtext(side = 2, text = ncol(M), line = 1, col = "white")
+  
 }
 
 ########################
@@ -146,4 +161,4 @@ for(i in 1:1000){
   Sys.sleep(0.2)
 }
 
-plotConway(array(runif(100,min = 0,max = 2),c(10,10)))
+plotConway(array(runif(100,min = 0,max = 2),c(1000,10)))
