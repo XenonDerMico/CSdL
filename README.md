@@ -12,17 +12,6 @@ Conways game of life
 ## Output: Matrixzustands nach Update
 
 
-TODO
+# TODO
 
-Parser: string > Regeln
-
-ListenRepräsentation
-
-Darstellung der Matrix als Bild (Eventuell aus ListenRepräsentation)
-
-
-- Abfangen: Matrix wird zu klein (Alles Schwarz)
-
-- Optic: Abmessungen der Matrix in den Achsen schreiben
-
-- Dokumentation der Funktonen
+Als Paket fertigstellen, siehe Vorlesung
