@@ -27,10 +27,10 @@ Hinzufügen:
         
        
 Vortrag:                05.07.2017
-        15 min vortrag + 10 min fragen
-        präsitiren Spielfeld
-        Wichtigste Funktionen vorstellen
-        Zusatzaufgabe und Schwerpunkt
-        Demo vorstellen
-        probleme und deren lösungen
-        Aufteilung der Arbeitsteile
+        -15 min vortrag + 10 min fragen
+        -präsitiren Spielfeld
+        -Wichtigste Funktionen vorstellen
+        -Zusatzaufgabe und Schwerpunkt
+        -Demo vorstellen
+        -probleme und deren lösungen
+        -Aufteilung der Arbeitsteile
