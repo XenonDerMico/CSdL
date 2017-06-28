@@ -15,3 +15,22 @@ Conways game of life
 # TODO
 
 Als Paket fertigstellen, siehe Vorlesung
+
+Hinzufügen:
+        summary.conway()
+        1. Länge und Breite des Spielfelds
+        2. Anzahl lebender Zellen
+        3. Anzahl toter Zellen
+        
+        
+        
+        
+       
+Vortrag:                05.07.2017
+        15 min vortrag + 10 min fragen
+        präsitiren Spielfeld
+        Wichtigste Funktionen vorstellen
+        Zusatzaufgabe und Schwerpunkt
+        Demo vorstellen
+        probleme und deren lösungen
+        Aufteilung der Arbeitsteile
