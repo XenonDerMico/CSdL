@@ -1,3 +1,12 @@
+#' create a random start matrix for CGoL
+#' 
+#' @param x number of rows
+#' @param y number of columns
+#' @param p probability that field value in the matrix is 0, else 1
+#' @param type the number type of the matrix fields
+#' @return a matrix with \code{x} rows and \code{y} columns, with random values {0, 1} of type \code{type} based on the probability \code{p}
+#' @examples
+#' Zufallsmatrix(10, 10, 0.5)
 Zufallsmatrix <- function(x,y,p, type = "double"){
   
   # Zufallsmatrix erzeugt eine x*y große Matrix deren Einträge mit einer
@@ -33,7 +42,11 @@ alsRegelliste <- function(regelstring){
   return(regelliste)
 }
 
-
+#' 
+#' 
+#' @param 
+#' @return 
+#' @examples
 Nachbarn <- function(M){
   
   # Gibt eine Matrix der Größe von M+2 zurück welche die Anzahl an Nachbar enthält
@@ -55,6 +68,12 @@ Nachbarn <- function(M){
   return(m)
 }
 
+
+#' 
+#' 
+#' @param 
+#' @return 
+#' @examples
 Verkleinern <- function(M){
   
   # Entfernt Ränder ohne lebende Zellen bis zu einer Mindestgröße von 2 X 2 
@@ -75,6 +94,12 @@ Verkleinern <- function(M){
   return(M)
 }
 
+
+#' 
+#' 
+#' @param 
+#' @return 
+#' @examples
 Update <- function(M,R = "23/3"){
 
   # Update bekommt eine Matrix und einen Regelsatz
@@ -103,6 +128,12 @@ Update <- function(M,R = "23/3"){
   
 }
 
+
+#' 
+#' 
+#' @param 
+#' @return 
+#' @examples
 plotConway <- function(M){
   par(bg = 'black')
   image(M,col = gray.colors(2,0,1),
