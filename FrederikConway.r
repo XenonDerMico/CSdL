@@ -225,11 +225,14 @@ x <- conway("random", p = 0.2, x=100)
 
 #plotConway(x)
 #x = Update(x)
-#x = array(c(1,0),c(51,51))
-for(i in 1:1000){
-  plot(x)
-  x <- update(x)#,R = "12345/3	")
-  Sys.sleep(0.2)
-}
+#x = array(c(1,0),c(51,51))r
+run <- function(x) UseMethod("run")
 
+run.conway <-function(con) {
+  for(i in 1:1000){
+    plot(con)
+    con <- update(con)
+    Sys.sleep(0.2)
+  }
+}
 #plotConway(array(runif(100,min = 0,max = 2),c(1000,10)))
